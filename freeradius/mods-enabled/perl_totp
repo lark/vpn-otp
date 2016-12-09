@@ -1,0 +1,6 @@
+perl perl-totp {
+        filename = /etc/freeradius/perl/vpn_auth.pl
+
+        func_authenticate = authenticate
+        func_post_auth = post_auth
+}

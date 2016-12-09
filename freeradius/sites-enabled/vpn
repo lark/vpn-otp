@@ -1,0 +1,50 @@
+server vpn {
+	listen {
+		ipaddr  = *
+		port    = 7777
+		type    = auth
+	}
+
+	client all {
+		ipaddr  = 0.0.0.0/0
+		secret  = thesecret
+	}
+
+	authorize {
+		auth_log
+
+		# hit a session, this is a response to challenge
+		if (session-state:User-Name) {
+			update {
+				control:Auth-Type := Perl
+			}
+		}
+
+		# this is username/password authentication
+		else {
+			files
+			#ldap-vpn
+			if ((ok || updated) && User-Password) {
+				update {
+					control:Auth-Type := Local
+				}
+			}
+		}
+	}
+
+	authenticate {
+		Auth-Type Local {
+			files
+			pap
+			#ldap-vpn
+			perl-totp
+		}
+		Auth-Type Perl {
+			perl-totp
+		}
+	}
+
+	post-auth {
+		reply_log
+	}
+}
