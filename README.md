@@ -33,6 +33,8 @@ The following perl modules are required:
 
 Authen::OATH is used for TOTP verification. You can replace it with a little of code to save a dependency.
 
+A `memcached` is required running on 127.0.0.1:11211.
+
 ## How to test
 
 The example configuration files are for test only.
